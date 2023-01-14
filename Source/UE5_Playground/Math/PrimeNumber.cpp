@@ -70,19 +70,17 @@ void FPrimeNumber::Find_AllPrimeNumbers()
 	mSpendTime = EndTime - StartTime;
 }
 
-void FPrimeNumber::Print_AllPrimeNumbers()
+void FPrimeNumber::Print_AllPrimeNumbers(const int32& In_Id)
 {
-	FString PrimeNumbersAsString;
-
-	for (const auto& PrimeNumber : mPrimeNumbers)
-	{
-		PrimeNumbersAsString.Append(TEXT(", "));
-		PrimeNumbersAsString.AppendInt(PrimeNumber);
-	}
-
-	UE_LOG(LogTemp, Log, TEXT("PrimeNumbers : %s"), *PrimeNumbersAsString);
-	UE_LOG(LogTemp, Log, TEXT("PrimeNumbers Count : %d, mCalcCount : %lld"), mPrimeNumbers.Num(), mCalcCount);
-
+	// FString PrimeNumbersAsString;
+	//
+	// for (const auto& PrimeNumber : mPrimeNumbers)
+	// {
+	// 	PrimeNumbersAsString.Append(TEXT(", "));
+	// 	PrimeNumbersAsString.AppendInt(PrimeNumber);
+	// }
+	// UE_LOG(LogTemp, Log, TEXT("PrimeNumbers : %s"), *PrimeNumbersAsString);
+	
 	FDateTime SpendDateTime = FDateTime(mSpendTime.GetTicks());
-	UE_LOG(LogTemp, Log, TEXT("Elapsed time is %dm %02ds %03dmm, tick is %lld"), SpendDateTime.GetMinute(), SpendDateTime.GetSecond(), SpendDateTime.GetMillisecond(), mSpendTime.GetTicks());
+	UE_LOG(LogTemp, Log, TEXT("In_Id(%d), mPrimeNumbers.Num(%d), mCalcCount(%lld), ElapsedTime(%dm %02ds %03dmm), Tick(%lld)"), In_Id, mPrimeNumbers.Num(), mCalcCount, SpendDateTime.GetMinute(), SpendDateTime.GetSecond(), SpendDateTime.GetMillisecond(), mSpendTime.GetTicks());
 }

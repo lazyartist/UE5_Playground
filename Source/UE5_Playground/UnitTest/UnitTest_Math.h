@@ -16,3 +16,21 @@ bool UnitTest_PrimeNumber::RunTest(FString const& Parameters)
 
 	return true;
 }
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UnitTest_PrimeNumber_ParallelFor, "PG.PrimeNumber.ParallelFor", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter | EAutomationTestFlags::CommandletContext)
+
+bool UnitTest_PrimeNumber_ParallelFor::RunTest(FString const& Parameters)
+{
+	int32 MaxEntries = 100;
+	ParallelFor( MaxEntries, [](int32 CurrIdx)
+	{
+		// 1개의 Task당 1.8초 가량 걸리고 100개라면 1800초.
+		// 32쓰레드 CPU로 돌렸을 때 56(=1800/32)초 정도 걸림.
+		// => 한 틱에 부분으로 나누어 독립적으로 실행할 수 있는 대량의 계산에 유용할 듯.
+		FPrimeNumber PrimeNumber;
+		PrimeNumber.Init(2, 10000);
+		PrimeNumber.Find_AllPrimeNumbers();
+		PrimeNumber.Print_AllPrimeNumbers(CurrIdx);
+	} );
+
+	return true;
+}

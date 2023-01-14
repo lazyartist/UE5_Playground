@@ -18,7 +18,7 @@ public:
 
 	void Find_AllPrimeNumbers();
 
-	void Print_AllPrimeNumbers();
+	void Print_AllPrimeNumbers(const int32& In_Id);
 
 private:
 	int32 mLimitPrimeNumberCount = 100000;
