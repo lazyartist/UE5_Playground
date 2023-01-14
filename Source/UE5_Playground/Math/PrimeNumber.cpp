@@ -14,13 +14,13 @@ FPrimeNumber::~FPrimeNumber()
 {
 }
 
-void FPrimeNumber::Init(const int32 In_StartPrimeNumber, const int32 In_LimitPrimeNumber)
+void FPrimeNumber::Init(const int32 In_StartPrimeNumber, const int32 In_LimitPrimeNumberCount)
 {
 	mLastPrimeNumber = In_StartPrimeNumber;
-	mLimitPrimeNumber = In_LimitPrimeNumber;
+	mLimitPrimeNumberCount = In_LimitPrimeNumberCount;
 
 	mPrimeNumbers.Empty();
-	mPrimeNumbers.Reserve(In_LimitPrimeNumber);
+	mPrimeNumbers.Reserve(mLimitPrimeNumberCount);
 }
 
 void FPrimeNumber::Find_AllPrimeNumbers()
@@ -56,12 +56,13 @@ void FPrimeNumber::Find_AllPrimeNumbers()
 			break;
 		}
 
-		++TargetPrimeNumber;
-		if (mLimitPrimeNumber < TargetPrimeNumber)
+		if (mPrimeNumbers.Num() > mLimitPrimeNumberCount)
 		{
-			UE_LOG(LogTemp, Log, TEXT("PrimeNumber is reached limit(%d)(CalcCount: %d)"), mLimitPrimeNumber, mCalcCount);
+			UE_LOG(LogTemp, Log, TEXT("PrimeNumberCount is reached limit(%d)(CalcCount: %lld)"), mLimitPrimeNumberCount, mCalcCount);
 			break;
 		}
+		
+		++TargetPrimeNumber;
 	}
 
 	UGameplayStatics::GetAccurateRealTime(Seconds, PartialSeconds);
@@ -80,8 +81,8 @@ void FPrimeNumber::Print_AllPrimeNumbers()
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("PrimeNumbers : %s"), *PrimeNumbersAsString);
-	UE_LOG(LogTemp, Log, TEXT("mCalcCount : %d"), mCalcCount);
+	UE_LOG(LogTemp, Log, TEXT("PrimeNumbers Count : %d, mCalcCount : %lld"), mPrimeNumbers.Num(), mCalcCount);
 
-	FDateTime d = FDateTime(mSpendTime.GetTicks());
-	UE_LOG(LogTemp, Log, TEXT("Elapsed time is %dm %02ds %03dmm, tick is %lld"), d.GetMinute(), d.GetSecond(), d.GetMillisecond(), mSpendTime.GetTicks());
+	FDateTime SpendDateTime = FDateTime(mSpendTime.GetTicks());
+	UE_LOG(LogTemp, Log, TEXT("Elapsed time is %dm %02ds %03dmm, tick is %lld"), SpendDateTime.GetMinute(), SpendDateTime.GetSecond(), SpendDateTime.GetMillisecond(), mSpendTime.GetTicks());
 }

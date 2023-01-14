@@ -14,20 +14,20 @@ public:
 	FPrimeNumber();
 	~FPrimeNumber();
 
-	void Init(const int32 In_StartPrimeNumber, const int32 In_LimitPrimeNumber);
+	void Init(const int32 In_StartPrimeNumber, const int32 In_LimitPrimeNumberCount);
 
 	void Find_AllPrimeNumbers();
 
 	void Print_AllPrimeNumbers();
 
 private:
-	int32 mLimitPrimeNumber = 100000;
+	int32 mLimitPrimeNumberCount = 100000;
 
 	int32 mLastPrimeNumber = 1;
 
 	TArray<int32> mPrimeNumbers;
 
-	int32 mCalcCount = 0;
+	int64 mCalcCount = 0;
 
 	FTimespan mSpendTime;
 };
