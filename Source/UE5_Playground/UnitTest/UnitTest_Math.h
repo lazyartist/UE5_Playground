@@ -4,7 +4,6 @@
 #include "UE5_Playground/Math/PrimeNumber.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(UnitTest_PrimeNumber, "PG.PrimeNumber", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter | EAutomationTestFlags::CommandletContext)
-
 bool UnitTest_PrimeNumber::RunTest(FString const& Parameters)
 {
 	FPrimeNumber PrimeNumber;
@@ -16,9 +15,9 @@ bool UnitTest_PrimeNumber::RunTest(FString const& Parameters)
 
 	return true;
 }
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UnitTest_PrimeNumber_ParallelFor, "PG.PrimeNumber.ParallelFor", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter | EAutomationTestFlags::CommandletContext)
 
-bool UnitTest_PrimeNumber_ParallelFor::RunTest(FString const& Parameters)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UnitTest_ParallelFor, "PG.ParallelFor", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter | EAutomationTestFlags::CommandletContext)
+bool UnitTest_ParallelFor::RunTest(FString const& Parameters)
 {
 	int32 MaxEntries = 100;
 	ParallelFor( MaxEntries, [](int32 CurrIdx)
@@ -31,6 +30,29 @@ bool UnitTest_PrimeNumber_ParallelFor::RunTest(FString const& Parameters)
 		PrimeNumber.Find_AllPrimeNumbers();
 		PrimeNumber.Print_AllPrimeNumbers(CurrIdx);
 	} );
+
+	// ParallelFor의 모든 태스크가 끝나고 아래 로그가 출력된다.
+	UE_LOG(LogTemp, Log, TEXT("ParallelFor Done"));
+
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UnitTest_TaskSystem, "PG.TaskSystem", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter | EAutomationTestFlags::CommandletContext)
+bool UnitTest_TaskSystem::RunTest(FString const& Parameters)
+{
+	for (int i = 0; i < 100; ++i)
+	{
+		UE::Tasks::Launch(UE_SOURCE_LOCATION, [i]()
+		{
+			FPrimeNumber PrimeNumber;
+			PrimeNumber.Init(2, 10000);
+			PrimeNumber.Find_AllPrimeNumbers();
+			PrimeNumber.Print_AllPrimeNumbers(i);
+		});
+	}
+	
+	// ParallelFor의 모든 태스크가 끝나고 아래 로그가 출력된다.
+	UE_LOG(LogTemp, Log, TEXT("TaskSystem Done"));
 
 	return true;
 }
